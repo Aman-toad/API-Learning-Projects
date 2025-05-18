@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+  </head>
+
+  <body style="
+background-color: rgb(38, 38, 38);
+display: flex;
+flex-direction: column;
+justify-content: center;
+font-family: 'Courier New', Courier, monospace;
+font-weight: bold;
+color: white;
+">
+    <h1 style="text-align: center;">
+      Random Useless Fact
+    </h1>
+    <div style="display: flex;
+    flex-direction: column;">
+
+      <div id="fact" style="display: flex;
+    justify-content: center;
+    align-content: center;
+    text-align: center;
+    border: solid;
+    margin-top: 10px;">
+      </div>
+      <div style="display: flex;
+    justify-content: center;
+    align-content: center;
+    text-align: center;
+    margin-top: 10px;">
+        <button style="width: 50%;
+        height: 2rem;
+        border-radius: 10px;
+        background: #000;
+        border: none;
+        color: white;
+        font-weight: bold;
+        font-size: larger;
+        cursor: pointer;" onclick="getUselessFact() ">
+          Fact
+        </button>
+      </div>
+    </div>
+
+    <script>
+      async function getUselessFact() {
+        const getFact = document.getElementById('fact')
+        getFact.textContent = 'loading the Fact..';
+
+        try {
+          const response = await fetch('https://uselessfacts.jsph.pl/random.json?language=en');
+
+          if(!response.ok){console.error('Network issue')};
+          const data = await response.json();
+
+          getFact.textContent = data.text;
+        } catch (error) {
+          getFact.textContent = 'Failed to fetch the fact. try again!! '
+          console.error(error);
+        }
+      }
+    </script>
+  </body>
+
+</html>

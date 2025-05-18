@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+  </head>
+
+  <body style="
+background-color: rgb(38, 38, 38);
+display: flex;
+flex-direction: column;
+justify-content: center;
+font-family: 'Courier New', Courier, monospace;
+font-weight: bold;
+color: white;
+">
+    <h1 style="text-align: center;">
+      Random Jokes
+    </h1>
+    <div style="display: flex;
+    flex-direction: column;">
+
+      <div id="joke" style="display: flex;
+    justify-content: center;
+    align-content: center;
+    text-align: center;
+    border: solid;
+    margin-top: 10px;
+    margin: 20px;">
+      </div>
+
+      <!-- jokeanswer box -->
+      <div id="jokeAnswer" style="display: flex;
+    justify-content: center;
+    align-content: center;
+    text-align: center;
+    border: solid;
+    margin-top: 10px;
+    margin: 20px;">
+      </div>
+
+
+      <div id="btns" style="display: flex;
+    justify-content: center;
+    align-content: center;
+    text-align: center;
+    margin-top: 10px;">
+        <button style="width: 50%;
+        height: 2rem;
+        border-radius: 10px;
+        background: #000;
+        border: none;
+        color: white;
+        font-weight: bold;
+        font-size: larger;
+        cursor: pointer;" onclick="getJoke() ">
+          Show The Joke
+        </button>
+        <button id="punchBtn" style="display: none;
+        width: 50%;
+        height: 2rem;
+        border-radius: 10px;
+        background: #000;
+        border: none;
+        color: white;
+        font-weight: bold;
+        font-size: larger;
+        cursor: pointer;">
+          Answer
+        </button>
+      </div>
+    </div>
+
+    <script>
+      async function getJoke() {
+        const jokeText = document.getElementById('joke')
+        jokeText.textContent = 'Loading the Joke....'
+        const jokeAnswer = document.getElementById('jokeAnswer')
+
+        try {
+          const res = await fetch('https://official-joke-api.appspot.com/random_joke')
+
+          if (!res.ok) throw new error('Network Issue..');
+
+          const data = await res.json()
+          jokeText.textContent = data.setup;
+
+          // displaying the answer button
+          const punchBtn = document.getElementById('punchBtn')
+          punchBtn.style.display = 'block'
+
+          punchBtn.onclick = () => {
+            jokeAnswer.textContent = data.punchline
+          }
+
+          jokeAnswer.textContent = ''
+
+        } catch (error) {
+          getJoke.textContent = 'Failed to fetch the joke. try again!! '
+          console.error(error);
+        }
+      }
+    </script>
+  </body>
+
+</html>

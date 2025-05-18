@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+  </head>
+
+  <body style="
+background-color: rgb(38, 38, 38);
+display: flex;
+flex-direction: column;
+justify-content: center;
+font-family: 'Courier New', Courier, monospace;
+font-weight: bold;
+color: white;
+">
+    <h1 style="text-align: center;">
+      Random Dog Image Generator
+    </h1>
+    <div style="display: flex;
+    flex-direction: column;">
+
+      <div style="display: flex;
+      justify-content: center;
+      text-align: center;
+      width: 100%;">
+        <img id="image" style="display: flex;
+    justify-content: center;
+    align-content: center;
+    text-align: center;
+    border: solid;
+    width: 30rem;
+    height: 30rem;
+    margin-top: 10px;">
+        </img>
+        
+      </div>
+      <h2 id="breed" style="text-align: center;">
+          breed: 
+        </h2>
+      <div style="display: flex;
+    justify-content: center;
+    align-content: center;
+    text-align: center;
+    margin-top: 10px;">
+        <button style="width: 50%;
+        height: 2rem;
+        border-radius: 10px;
+        background: #000;
+        border: none;
+        color: white;
+        font-weight: bold;
+        font-size: larger;
+        cursor: pointer;" onclick="getDog() ">
+          Get a Dog
+        </button>
+      </div>
+    </div>
+
+    <script>
+      async function getDog() {
+        const getImage = document.getElementById('image');
+        const getBreed = document.getElementById('breed');
+        getBreed.textContent = 'loading...'
+        getImage.src = 'Image is Loading....';
+
+        try {
+          const response = await fetch('https://dog.ceo/api/breeds/image/random')
+
+          if (!response.ok) {
+            console.error('Connection error...');
+          }
+          const data = await response.json()
+          getImage.src = data.message;
+
+          const parts = data.message.split('/');
+          const breed = parts[parts.indexOf('breeds') + 1].replace('-',' ')
+          getBreed.textContent = 'Breed: ' + breed
+          
+        } catch (error) {
+          getImage.textContent = 'Failed to Load the image'
+          console.error(error);
+          getBreed.textContent = 'could not load the breed info...'
+          
+        }
+      }
+    </script>
+
+  </body>
+
+</html>

@@ -1,0 +1,56 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body{
+  background-color: rgb(25, 25, 25);
+  color: white;
+}
+
+section{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.converter-container{
+  border: solid 2px rgb(52, 52, 52);
+  padding: 30px;
+  border-radius: 10px;
+  backdrop-filter: blur(4px);
+  background-color: #4e4d4d;
+  margin-top: 10%;
+  max-width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+h1{
+  margin-bottom: 20px;
+  font-size: 30px;
+  text-decoration: underline black;
+}
+
+input{
+  padding: 10px;
+  width: 200px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+
+select{
+  padding: 9px;
+  border-radius: 10px;
+  width: 100px;
+}
+
+.arrow{
+  font-size: 25px;
+}
+
+
+
