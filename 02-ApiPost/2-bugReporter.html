@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bug Reporting</title>
+  </head>
+
+  <body>
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        border: none;
+      }
+
+      body {
+        background: #131a25;
+        color: white;
+      }
+
+      .wrapper {
+        display: flex;
+        justify-content: center;
+        backdrop-filter: blur(2px);
+      }
+
+      .container {
+        border: 2px solid white;
+        margin: 20%;
+        margin-top: 5%;
+        padding: 50px;
+        padding-top: 10px;
+        border-radius: 10%;
+        backdrop-filter: blur(5px);
+        background: #141a24;
+      }
+
+      h2 {
+        margin-bottom: 40px;
+      }
+
+      #bugSection {
+        display: inline;
+      }
+
+      select {
+        padding: 10px;
+        border-radius: 5%;
+      }
+
+      textarea {
+        padding: 10px;
+        border-radius: 10px;
+      }
+
+      button {
+        padding: 10px;
+        cursor: pointer;
+        border-radius: 5%;
+        margin-top: 10px;
+      }
+
+      button:hover {
+        background-color: rgb(184, 184, 184);
+      }
+
+      #statusMsg {
+        margin-top: 20px;
+      }
+    </style>
+
+    <div class="wrapper">
+      <div class="container">
+        <h2>Report a Bug</h2>
+
+        <p id="bugSection">Bug section : </p>
+        <select id="bugOption">
+          <option value="login">login</option>
+          <option value="dashboard">Dashboard</option>
+          <option value="profile">Profile</option>
+          <option value="other">Other</option>
+        </select>
+
+        <br><br>
+
+        <textarea id="bugDesc" placeholder="Describe the Bug ..." rows="5" cols="40"></textarea>
+
+        <br>
+
+        <button onclick="reportBug()">Submit Bug</button>
+
+        <p id="statusMsg"></p>
+      </div>
+    </div>
+  </body>
+
+  <script>
+    async function reportBug() {
+      const bug = document.getElementById('bugOption').value;
+      const bugDesc = document.getElementById('bugDesc').value;
+      const statusMsg = document.getElementById('statusMsg');
+
+      if (bugDesc.trim() === '') {
+        statusMsg.textContent = 'Please describe the bug before submitting.';
+        return;
+      }
+
+      statusMsg.textContent = 'Submitting Your Report ...';
+
+      try {
+        const res = await fetch("https://jsonplaceholder.typicode.com/posts", {
+          method: 'POST',
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            section: bugSection,
+            bugDesc: bugDesc
+          })
+        });
+
+        const data = await res.json();
+        console.log("Bug Reported: ", data);
+
+        statusMsg.textContent = `✅ Bug Reported For ${bug}. Thank You !`
+
+        document.getElementById("bugDesc").value = "";
+        document.getElementById("bugOption").value = "login";
+
+      } catch (err) {
+        console.log("Error Reporting Bug: ", err);
+        statusMsg.textContent = "Failed to report bug. Try again !!"
+      }
+    }
+  </script>
+
+</html>

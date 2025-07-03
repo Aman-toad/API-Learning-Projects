@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback form</title>
+  </head>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #1c1c1c;
+      color: white;
+      font-family: "Averia Libre", sans-serif, fantasy;
+    }
+
+    .wrapper {
+      display: flex;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .container {
+      width: 500px;
+    }
+
+    .form_container {
+      border: solid 2px white;
+    }
+
+    .form_box {
+      margin-top: 30px;
+    }
+
+    button {
+      padding: 10px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-family: "Averia Libre", sans-serif, fantasy;
+      font-weight: bold;
+      font-size: large;
+      transition: transform 0.3s ease-in-out;
+      border: none;
+    }
+
+    button:hover {
+      transform: scale(1.09);
+    }
+
+    button:active {
+      color: #fff;
+    }
+  </style>
+
+  <body>
+    <div class="wrapper">
+      <div class="container">
+        <div class="form_container">
+          <h1>Feedback Form</h1>
+          <div>
+            <input style="width: 50%; height: 35px; border-radius: 10px; padding: 5px;" type="text" id="name"
+              placeholder="Name..">
+            <br>
+            <textarea
+              style="width: 50%; height: 100px; border-radius: 10px; padding: 5px; padding-top: 8px; margin-top: 10px;"
+              id='message' placeholder="Text Here.."></textarea>
+            <br>
+
+            <button onclick="sendFeedback()">Submit</button>
+          </div>
+
+        </div>
+        <div>
+          <p style="margin-top: 30px; padding: 10px; border: solid 2px white;" id="resultBox"></p>
+        </div>
+      </div>
+    </div>
+  </body>
+
+  <script>
+    async function sendFeedback() {
+      const name = document.getElementById('name').value;
+      const message = document.getElementById('message').value;
+      const resultBox = document.getElementById('resultBox');
+
+      if (name == '' || message == '') {
+        alert('field must be filled');
+      }
+
+      else {
+        
+        resultBox.textContent = 'Sending...';
+        try {
+          const res = await fetch('https://jsonplaceholder.typicode.com/posts', {
+            method: 'POST',
+            headers: {
+              "Content-Type": 'application/json'
+            },
+            body: JSON.stringify({
+              name: name,
+              message: message
+            })
+          });
+
+          const data = await res.json()
+
+          resultBox.textContent = `Thanks, ${data.name}. we got your message: "${data.message}" (fake ID: ${data.id})`;
+        } catch (err) {
+          resultBox.textContent = 'failed to send feedback';
+          console.error(err);
+        }
+      }
+    }
+  </script>
+
+</html>

@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Dashbord </title>
+
+    <link rel="stylesheet" href="styles.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Averia+Libre:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap"
+      rel="stylesheet">
+  </head>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #1c1c1c;
+      color: white;
+      font-family: "Averia Libre", sans-serif, fantasy;
+    }
+
+    .wrapper {
+      display: flex;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .container{
+      width: 500px;
+    }
+
+    h2 {
+      margin-top: 30px;
+    }
+
+    .btns{
+      margin-top: 30px;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+    }
+    
+    button{
+      padding: 10px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-family: "Averia Libre", sans-serif, fantasy;
+      font-weight: bold;
+      font-size: large;   
+      transition: transform 0.3s ease-in-out; 
+      border: none; 
+    }
+
+    button:hover{
+      transform: scale(1.09);
+    }
+
+    button:active{
+      color: #fff;
+    }
+
+    .box{
+      border: 2px solid white;
+      margin-top: 40px;
+      border-radius: 10px;
+      padding: 10px;
+    }
+  </style>
+
+  <body>
+    <div class="wrapper">
+      <div class="container">
+        <div class="heading">
+          <h1>Welcome to API Fetching</h1>
+          <h2>Choose one</h2>
+        </div>
+        <div class="btns">
+          <div><button style="background-color: rgb(213, 213, 4);" onclick="getJoke() ">Get Joke</button></div>
+          <div><button style="background-color: rgb(20, 137, 254);" onclick="getQuote()">Get Quote</button></div>
+          <div><button style="background-color: rgb(225, 147, 0);" onclick="getDog()">Get Dog</button></div>
+          <div><button style="background-color: palevioletred;" onclick="getCatFact()">Get Cat fact</button></div>
+        </div>
+        <div class="box" id="displayArea">
+          Your Content Will Show here...
+        </div>
+        <div id="imageBox" style="display: none;" class="box">
+          <img id="displayImage" style="width: 100%; height: 100%;">
+        </div>
+        <div style="display: none" class="box" id="jokeAnswer"></div>
+        <div class="btn" style="margin-top: 10px;">
+          <button onclick="copyContent()">
+            Copy content
+          </button>
+        </div>
+      </div>
+      
+    </div>
+  </body>
+
+  <script>
+    const displayArea = document.getElementById('displayArea');
+    const imageBox = document.getElementById('imageBox')
+    const displayImage = document.getElementById('displayImage');
+    const displayJokeAns = document.getElementById('jokeAnswer');
+
+    async function getJoke(){
+      displayArea.textContent = "Loading..."
+      try{
+        const response = await fetch('https://official-joke-api.appspot.com/random_joke')
+        if(!response.ok) console.log('connection error...');
+
+        const data = await response.json();
+        displayArea.textContent = data.setup;
+        displayJokeAns.style.display = 'block';
+        displayJokeAns.textContent = 'PunchLine: '+ data.punchline;
+        imageBox.style.display='none';
+        
+      } catch(error){
+        displayArea.textContent = ' failed to load the joke';
+        displayJokeAns.textContent = 'failed to load the answer'
+        console.log(error);
+        
+      }      
+    }
+
+    async function getQuote(){
+      displayArea.textContent = "Loading..."
+
+      try{
+        const res = await fetch('https://api.api-ninjas.com/v1/quotes', {
+          method : 'Get',
+          headers : {
+            'X-Api-key': ''//api key
+          }
+        });
+        if(!res.ok) console.log('connection error');
+
+        const data = await res.json();
+        displayArea.textContent = `"${data[0].quote}" \n Author : " ${data[0].author}"`
+        displayJokeAns.style.display='none';
+        imageBox.style.display='none';
+      } catch(error){
+        displayArea.textContent = 'failed to fetch the quote...'
+      }
+      
+    }
+
+    async function getDog(){
+      displayArea.textContent = "Loading...";
+      imageBox.style.display='block';
+      displayImage.src = 'Image is Loading...'
+
+      try{
+        const response = await fetch('https://dog.ceo/api/breeds/image/random');
+
+        if(!response.ok) console.log('connection error...');
+
+        const data = await response.json();
+        
+        displayImage.src = data.message;
+        const parts = data.message.split('/')
+        const breed = parts[parts.indexOf('breeds') + 1].replace('-',' ')
+        displayArea.textContent = "Breed: " + breed;
+        displayJokeAns.style.display='none';
+      } 
+      catch(error){
+        displayArea.textContent = 'failed to load the breed info..'
+        displayImage.textContent = 'failed to load the image'
+      }
+     }
+
+    async function getCatFact(){
+      displayArea.textContent = "Loading..."
+      try{
+        const response = await fetch('https://catfact.ninja/fact');
+        if(!response.ok) console.log('Connection error..');
+        
+        const data = await response.json();
+        displayArea.textContent = data.fact;
+        displayJokeAns.style.display='none';
+        imageBox.style.display='none';
+      } catch(error){
+        displayArea.textContent = 'Failed to fetch the cat fact...';
+        console.log(error);      
+      }     
+    }
+
+
+    function copyContent (){
+      const content = displayArea.innerText;
+      navigator.clipboard.writeText(content)
+      .then(() => alert('Content Copied'))
+      .catch(err => alert('Failed to copy' + err));
+    }
+    
+  </script>
+
+</html>

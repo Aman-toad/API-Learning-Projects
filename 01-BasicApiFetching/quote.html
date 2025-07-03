@@ -71,7 +71,6 @@ color: white;
           if (!res.ok) throw new Error("network response was not ok")
 
           const data = await res.json();
-          console.log(data);
 
           quoteText.textContent = `"${data[0].quote}"`
           authorName.textContent = "Author : " + `"${data[0].author}"`
