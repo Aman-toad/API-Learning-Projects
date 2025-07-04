@@ -17,7 +17,7 @@ async function reportBug() {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        section: bugSection,
+        bug: bug,
         bugDesc: bugDesc
       })
     });
