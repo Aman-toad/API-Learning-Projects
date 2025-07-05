@@ -105,11 +105,11 @@ function renderNotes() {
 
 renderNotes();
 
-function editNote(id){
+function editNote(id) {
   const notes = JSON.parse(localStorage.getItem('notes')) || [];
   const noteToEdit = notes.find(note => note.id === id);
 
-  if(!noteToEdit) return;
+  if (!noteToEdit) return;
 
   document.getElementById('titleInp').value = noteToEdit.title;
   document.getElementById('contentInp').value = noteToEdit.content;
@@ -118,12 +118,30 @@ function editNote(id){
   editId = id;
 }
 
-function deleteNote(id){
+async function deleteNote(id) {
+  if (!confirm("Are you sure you want to delete this note ? "))
+    return;
+
   let notes = JSON.parse(localStorage.getItem('notes')) || [];
 
   const updatedNotes = notes.filter(note => note.id !== id);
 
-  localStorage.setItem('notes',JSON.stringify(updatedNotes));
+  localStorage.setItem('notes', JSON.stringify(updatedNotes));
 
+  // delete request api
+  try {
+    const res = await fetch(`https://jsonplaceholder.typicode.com/posts/${id}`, {
+      method: 'DELETE'
+    });
+
+    if (res.ok) {
+      console.log('Deleted from API');
+    } else {
+      console.error("Failed to delete from API");
+    }
+  } catch (err) {
+    console.error("Delete error:", err);
+  }
+  
   renderNotes();
 }
