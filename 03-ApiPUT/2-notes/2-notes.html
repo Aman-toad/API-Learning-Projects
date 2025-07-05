@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bug Reporting</title>
+  </head>
+
+  <body>
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        border: none;
+      }
+
+      body {
+        background: #131a25;
+        color: white;
+      }
+
+      .wrapper {
+        display: flex;
+        justify-content: center;
+        backdrop-filter: blur(2px);
+      }
+
+      .container {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        border: 2px solid white;
+        margin-top: 5%;
+        padding: 40px;
+        padding-top: 10px;
+        border-radius: 10%;
+        backdrop-filter: blur(5px);
+        background: #141a24;
+        width: 400px;
+      }
+
+      h2 {
+        margin-bottom: 10px;
+      }
+
+      textarea {
+        padding: 10px;
+        border-radius: 10px;
+      }
+
+      input {
+        padding: 10px;
+        border-radius: 10px;
+      }
+
+      button {
+        padding: 10px;
+        cursor: pointer;
+        border-radius: 5%;
+        margin-top: 10px;
+        margin-bottom: 10px;
+      }
+
+      button:hover {
+        background-color: rgb(184, 184, 184);
+      }
+
+      #statusMsg {
+        margin-top: 20px;
+      }
+    </style>
+
+    <div class="wrapper">
+      <div class="container">
+        <h2>Notes App</h2>
+
+        <input type="text" id="titleInp" placeholder="Title">
+        <textarea rows="5" cols="20" type="text" id="contentInp" placeholder="Content"></textarea>
+
+        <button onclick="addNote()">Add</button>
+
+      </div>
+
+      <div class="container">
+        <p id="status"></p>
+        <h2>Your Notes</h2>
+        <div id="showNotes"></div>
+      </div>
+    </div>
+  </body>
+
+  <script src="script.js"></script>
+
+</html>
